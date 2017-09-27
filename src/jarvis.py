@@ -1,37 +1,38 @@
 from functions import Functions
+from random import randint
+import config
 
 class Jarvis():
 	def __init__(self):
-		self.robot_name = ["jarvis", "showman","charters", "garvin",
-		"charges", "charles","charms","for this", "sure this", "for that","john","for you","for her", "far this"]
-
+		pass
 	def run(self):
 		f = Functions()
-		f.greetings()
-		#f.current_time()
-		#jarvis.music("play")
 
-		"""
+		f.say("How may I be of assistance sir?")
+
 		while True:
-			print("Waiting for command..")
-			command = f.listen2()
+			command = f.listen()
 			if command is not None:
-				for i in range(len(self.robot_name)):
-					if command.lower().startswith(self.robot_name[i]):
-						#f.say(command)
-						print("I heard you say: " + command.replace(self.robot_name[i],"f"))
-						break
-					elif i==len(self.robot_name)-1:
-						print("command failed: " + str(command))
+				command = command.lower()
+			if any(word in command for word in config.greetings_list):
+				f.greetings()
+			elif any(word in command for word in config.time_list):
+				f.current_time()
+			elif any(word in command for word in config.music_list):
+				f.music("play")
+			elif any(word in command for word in config.mission_list):
+				f.say(config.mission)
+			elif any(word in command for word in config.thank_you_list):
+				choice = randint(0,len(config.thank_you)-1)
+				f.say(config.thank_you[choice])
+			elif any(word in command for word in config.sorry_list):
+				choice = randint(0,len(config.sorry)-1)
+				f.say(config.sorry[choice])
+			elif any(word in command for word in config.master_list):
+				f.say(config.master)
+			elif any(word in command for word in config.weather_list):
+				f.weather()
+			prev_command = command
 
-				if "play music" in command.lower():
-					f.music('play')
 
-				elif "greetings" in command.lower():
-					f.greetings()
 
-				elif "time" in command.lower():
-					f.current_time()
-
-				command = ""
-		"""
