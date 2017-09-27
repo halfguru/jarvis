@@ -56,3 +56,4 @@ while True:
 
 		command = ""
 """
+def __exit__(self, type, value, traceback):

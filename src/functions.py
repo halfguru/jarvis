@@ -1,10 +1,11 @@
-import pyttsx3, os, json, config, math
+import pyttsx3, os, json, config, math, urllib.parse, webbrowser
 import speech_recognition as sr
 from microphone import *
-from weather import Weather
-from datetime import datetime, time
 from random import randint
-
+from weather import Weather
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+from datetime import datetime, time
 
 class Functions():
 	def __init__(self):
@@ -16,82 +17,75 @@ class Functions():
 		self.engine.setProperty('voice', self.voices[1].id)
 		self.language_code = 'en-US'  # a BCP-47 language tag
 		self.client = speech.SpeechClient()
-		self.config = types.RecognitionConfig(
-			encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,
-			sample_rate_hertz=RATE,
-			language_code=self.language_code)
-		self.streaming_config = types.StreamingRecognitionConfig(
-			config=self.config,
-			interim_results=True)
+		self.config = types.RecognitionConfig(encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,sample_rate_hertz=RATE, language_code=self.language_code)
+		self.streaming_config = types.StreamingRecognitionConfig(config=self.config,interim_results=True)
 
+	#Open microphone and listen for input
 	def listen(self):
 		with MicrophoneStream(RATE, CHUNK) as stream:
 			audio_generator = stream.generator()
-			requests = (types.StreamingRecognizeRequest(audio_content=content)
-						for content in audio_generator)
-
+			requests = (types.StreamingRecognizeRequest(audio_content=content)for content in audio_generator)
 			responses = self.client.streaming_recognize(self.streaming_config, requests)
 			# Now, put the transcription responses to use.
 			print("Awaiting command...")
 			return self.listen_print_loop(responses)
 
+	#Iterates through server responses and prints them.
 	def listen_print_loop(self, responses):
-		"""Iterates through server responses and prints them.
-		The responses passed is a generator that will block until a response
-		is provided by the server.
-		Each response may contain multiple results, and each result may contain
-		multiple alternatives; for details, see https://goo.gl/tjCPAU. 
-		"""
 		num_chars_printed = 0
-		for response in responses:
-			if not response.results:
-				continue
-			# The `results` list is consecutive. For streaming, we only care about
-			# the first result being considered, since once it's `is_final`, it
-			# moves on to considering the next utterance.
-			result = response.results[0]
-			if not result.alternatives:
-				continue
-			# Display the transcription of the top alternative.
-			transcript = result.alternatives[0].transcript
-			# Display interim results, but with a carriage return at the end of the
-			# line, so subsequent lines will overwrite them.
-			#
-			# If the previous result was longer than this one, we need to print
-			# some extra spaces to overwrite the previous result
-			overwrite_chars = ' ' * (num_chars_printed - len(transcript))
+		try:
+			for response in responses:
+				if not response.results:
+					continue
+				# The `results` list is consecutive. 
+				result = response.results[0]
 
-			if not result.is_final:
-				sys.stdout.write(transcript + overwrite_chars + '\r')
-				sys.stdout.flush()
-				num_chars_printed = len(transcript)
+				if not result.alternatives:
+					continue
+				# Display the transcription of the top alternative.
+				transcript = result.alternatives[0].transcript
+				# Display interim results, but with a carriage return at the end of the
+				# line, so subsequent lines will overwrite them.
+				overwrite_chars = ' ' * (num_chars_printed - len(transcript))
 
-			else:
-				print(transcript + overwrite_chars)
-				# Exit recognition if any of the transcribed phrases could be
-				# one of our keywords.
-				if re.search(r'\b(exit|quit)\b', transcript, re.I):
-					print('Exiting..')
-					break
-				num_chars_printed = 0
-				return (transcript + overwrite_chars)
+				if not result.is_final:
+					sys.stdout.write(transcript + overwrite_chars + '\r')
+					sys.stdout.flush()
+					num_chars_printed = len(transcript)
 
+				else:
+					print(transcript + overwrite_chars)
+					# Exit recognition if any of the transcribed phrases could be
+					# one of our keywords.
+					if re.search(r'\b(exit|quit)\b', transcript, re.I):
+						print('Exiting..')
+						break
+					num_chars_printed = 0
+					return (transcript + overwrite_chars)
+		except KeyboardInterrupt:
+			sys.exit()
+		except:
+			print("No commands detected in 1 minute")
+
+	#Change voice
 	def voice_change(self, voice):
 		self.engine.setProperty('voice', self.voices[int(voice)].id)
 		self.say("Here is my new voice. I hope you enjoy it.")
 
+	#Change voice speed
 	def voice_speed(self, speed):
 		self.engine.setProperty('rate',self.rate+speed)
 
+	#Voice says something
 	def say(self, voice_command):
 		print("Jarvis says: " + str(voice_command))
 		self.engine.say(str(voice_command))
 		self.engine.runAndWait()
 
-
+	#List choices for voice change
 	def voice_change_command(self):
 		self.say("Which voice would you like to select sir?")
-		command = self.listen_google()
+		command = self.listen()
 		if command is not None:
 			command = command.lower()
 			print(str(command))
@@ -109,7 +103,7 @@ class Functions():
 		else:
 			self.say("You didn't say anything sir.")
 
-
+	#Greetings depending on time
 	def greetings(self,):
 		now = datetime.now()
 		now_time = now.time()
@@ -117,15 +111,17 @@ class Functions():
 			self.say('Good morning sir')
 		elif now_time >= time(12,31) and now_time <= time(17,30):
 			self.say('Good afternoon sir')
-		else:	
+		else:   
 			self.say('Good evening sir')
 
+	#Checks current hour and minute
 	def current_time(self):
-		now = datetime.now()	
+		now = datetime.now()    
 		self.say("It is currently")
-		self.say(str(now.hour) + "hour")
-		self.say(str(now.minute) + "minute")
+		self.say(str(now.hour) + " hour")
+		self.say(str(now.minute) + " minute")
 
+	#Plays music
 	def music(self, type):
 		if type.lower()=="play":
 			music_list = []
@@ -141,10 +137,25 @@ class Functions():
 		print("Playing " + str(path).replace("mp3",""))
 		os.startfile(music_list[randomSong])
 
+	#Checks weather
 	def weather(self):
 		weather = Weather()
 		lookup = weather.lookup(91982014)
 		condition = lookup.condition()
 		condition['temp'] = str(math.ceil((int(condition['temp']) - 32)*0.555555))
-		self.say("It is currently " + condition['temp'] + "celcius and condition is " + condition['text'])
+		self.say("It is currently " + condition['temp'] + " celcius and condition is " + condition['text'])
 
+	def youtube(self, textToSearch):
+		self.say("Searching for video")
+		query = urllib.parse.quote(textToSearch)
+		url = "https://www.youtube.com/results?search_query=" + query
+		response = urlopen(url)
+		html = response.read()
+		soup = BeautifulSoup(html,"html.parser")
+		self.say("Playing " + str(textToSearch) + " youtube video")
+	
+		for vid in soup.findAll(attrs={'class':'yt-uix-tile-link'}):
+			if "https://googleads.g.doubleclick.net/" not in vid['href']:
+				print ("https://www.youtube.com" + vid["href"])
+				webbrowser.open("https://www.youtube.com" + vid["href"])
+				break

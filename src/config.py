@@ -11,19 +11,23 @@ GOOGLE_CLOUD_SPEECH_CREDENTIALS = r"""
 	"auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
 	"client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/jarvis%40idyllic-formula-181105.iam.gserviceaccount.com"
 }"""
+GOOGLE_CLOUD_SPEECH_CREDENTIALS_PATH = "C:/Users/sho/Desktop/jarvis/src/google_credentials.json"
+robot_name_list  = ["jarvis", "showman","charters", "garvin", "charges", "charles","charms","for this", "sure this", "for that","john","for you","for her", "far this"]
+greetings_list   = ["greetings","hello","salutations","hi"]
+time_list 		 = ["time", "hour"]
+music_list 		 = ["music", "song", "track"]
+weather_list 	 = ["weather", "temperature", "outside", "out there"]
 
-robot_name_list = ["jarvis", "showman","charters", "garvin", "charges", "charles","charms","for this", "sure this", "for that","john","for you","for her", "far this"]
-greetings_list = ["greetings","hello","salutations","hi","what's up","what is up"]
-time_list = ["time", "hour"]
-music_list = ["music", "song", "track"]
-weather_list = ["weather", "temperature", "outside", "out there"]
-
-thank_you_list = ["thank you","thanks"]
-thank_you = ["no problem sir", "with pleasure sir", "much obliged sir"]
-sorry_list = ["sorry", "my bad", "my fault", "oops"]
-sorry = ["no problem sir", "mistakes are only human sir", "you are forgiven sir, carry on", "do not be sorry sir", "no worries", "it's fine", "apology accepted", "don't mention it","you should be, but I forgive you."]
-mission = "I am Jarvis, which stands for Just A Rather Very Intelligent System. I am a highly advanced computerized artificial intelligence developed by Simon Ho."
-mission_list = ["mission","who are you","purpose", "what are you"]
-master = ["My creator is Simon Ho"]
-master_list = ["master", "who created you", "who's your creator", "who is your creator", "who made you"]
+wake_up	 		 = "At your service sir"
+wake_up_list 	 = ["you there", "hey jarvis", "jarvis", "wake up"]
+exit 			 = "System powering down"
+exit_list		 = ["exit", "terminate", "close","power down"]
+thank_you_list 	 = ["thank you","thanks"]
+thank_you 		 = ["no problem sir", "with pleasure sir", "much obliged sir"]
+sorry_list 		 = ["sorry", "my bad", "my fault", "oops"]
+sorry 			 = ["no problem sir", "mistakes are only human sir", "you are forgiven sir, carry on", "do not be sorry sir", "no worries", "it's fine", "apology accepted", "don't mention it","you should be, but I forgive you."]
+mission 		 = "I am Jarvis, which stands for Just A Rather Very Intelligent System. I am a highly advanced computerized artificial intelligence developed by Simon Ho."
+mission_list 	 = ["mission","who are you","purpose", "what are you"]
+master 			 = "My creator is Simon Ho"
+master_list 	 = ["master", "who created you", "who's your creator", "who is your creator", "who made you", "daddy"]
 
