@@ -9,6 +9,7 @@ from datetime import datetime, time
 from random import randint
 
 class Functions():
+
 	def __init__(self):
 		self.r = sr.Recognizer()
 		self.engine = pyttsx3.init()
@@ -17,6 +18,7 @@ class Functions():
 		self.engine.setProperty('rate', self.rate - 20)
 		self.engine.setProperty('voice', self.voices[1].id)
 		self.language_code = 'en-US'  # a BCP-47 language tag
+		os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = config.GOOGLE_CLOUD_SPEECH_CREDENTIALS_PATH
 		self.client = speech.SpeechClient()
 		self.config = types.RecognitionConfig(encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,sample_rate_hertz=RATE, language_code=self.language_code)
 		self.streaming_config = types.StreamingRecognitionConfig(config=self.config,interim_results=True)
@@ -132,7 +134,7 @@ class Functions():
 		self.say(config.wake_up[choice])
 
 	#Close system
-	def exit(self,):
+	def exit(self):
 		self.say(config.exit)
 		sys.exit()
 

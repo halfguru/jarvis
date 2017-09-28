@@ -1,3 +1,4 @@
+import os
 GOOGLE_CLOUD_SPEECH_CREDENTIALS = r"""
 {
 	"type": "service_account",
@@ -12,7 +13,9 @@ GOOGLE_CLOUD_SPEECH_CREDENTIALS = r"""
 	"client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/jarvis%40idyllic-formula-181105.iam.gserviceaccount.com"
 }"""
 #GOOGLE_CLOUD_SPEECH_CREDENTIALS_PATH = "C:/Users/sho/Desktop/jarvis/src/google_credentials.json"
-GOOGLE_CLOUD_SPEECH_CREDENTIALS_PATH = "C:/Users/Simon/Desktop/Coding/jarvis/src/google_credentials.json"
+#GOOGLE_CLOUD_SPEECH_CREDENTIALS_PATH = "C:/Users/Simon/Desktop/Coding/jarvis/src/google_credentials.json"
+PATH = (os.path.abspath(__file__).replace("config.py","") + "google_credentials.json")
+GOOGLE_CLOUD_SPEECH_CREDENTIALS_PATH = PATH
 
 robot_name_list  = ["jarvis", "showman","charters", "garvin", "charges", "charles","charms","for this", "sure this", "for that","john","for you","for her", "far this"]
 greetings_list   = ["greetings","hello","salutations","hi"]
