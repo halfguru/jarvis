@@ -11,18 +11,24 @@ GOOGLE_CLOUD_SPEECH_CREDENTIALS = r"""
 	"auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
 	"client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/jarvis%40idyllic-formula-181105.iam.gserviceaccount.com"
 }"""
-GOOGLE_CLOUD_SPEECH_CREDENTIALS_PATH = "C:/Users/sho/Desktop/jarvis/src/google_credentials.json"
+#GOOGLE_CLOUD_SPEECH_CREDENTIALS_PATH = "C:/Users/sho/Desktop/jarvis/src/google_credentials.json"
+GOOGLE_CLOUD_SPEECH_CREDENTIALS_PATH = "C:/Users/Simon/Desktop/Coding/jarvis/src/google_credentials.json"
+
 robot_name_list  = ["jarvis", "showman","charters", "garvin", "charges", "charles","charms","for this", "sure this", "for that","john","for you","for her", "far this"]
 greetings_list   = ["greetings","hello","salutations","hi"]
 time_list 		 = ["time", "hour"]
 music_list 		 = ["music", "song", "track"]
 weather_list 	 = ["weather", "temperature", "outside", "out there"]
+search_list		 = ["search", "look up", "define"]
+search_more_list = ["tell me","more", "extend", "longer", "elaborate"]
+enum_command_list= ["list command", "command list", "can you do", "you can do", "enumerate"]
+enum_command 	 = ["Greetings", "Wake up", "Exit", "Time", "Weather", "Music", "Mission", "Master", "Search", "Youtube", "Thank you", "Sorry", "Enumerate commands"]
 
-wake_up	 		 = "At your service sir"
-wake_up_list 	 = ["you there", "hey jarvis", "jarvis", "wake up"]
+wake_up	 		 = ["At your service sir", "for you sir. I will always be there."]
+wake_up_list 	 = ["you there", "hey jarvis", "wake up", "you up","hear me"]
 exit 			 = "System powering down"
 exit_list		 = ["exit", "terminate", "close","power down"]
-thank_you_list 	 = ["thank you","thanks"]
+thank_you_list 	 = ["thank you","thanks","appreciate it"]
 thank_you 		 = ["no problem sir", "with pleasure sir", "much obliged sir"]
 sorry_list 		 = ["sorry", "my bad", "my fault", "oops"]
 sorry 			 = ["no problem sir", "mistakes are only human sir", "you are forgiven sir, carry on", "do not be sorry sir", "no worries", "it's fine", "apology accepted", "don't mention it","you should be, but I forgive you."]
