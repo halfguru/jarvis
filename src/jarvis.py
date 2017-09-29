@@ -1,5 +1,5 @@
 import config, sys, time
-from functions import Functions
+from commands import Commands
 from random import randint
 
 class Jarvis():
@@ -7,51 +7,39 @@ class Jarvis():
 		pass
 		
 	def run(self):
-		f = Functions()
-		f.say("How may I be of assistance sir?")
 		prev_command = ""
+		c = Commands()
+		c.booting()
+
 		while True:
-			command = f.listen()
-			if command is not None:
+			command = c.listen()			
+			if command is not None:					
 				command = command.lower()
+				if self.incomplete_command(command):	
+					c.incomplete()
+				else:
+					for fct_keyword in config.fct_key:
+						if any(self.space_words(word) in self.space_words(command) for word in fct_keyword):
+							print("Command name: " + config.fct_name[config.fct_key.index(fct_keyword)])
+							if config.fct_name[config.fct_key.index(fct_keyword)] == "search":
+								c.search(command)
+								break
+							elif config.fct_name[config.fct_key.index(fct_keyword)] == "youtube":
+								c.youtube(command)
+								break
+							else:
+								getattr(c, config.fct_name[config.fct_key.index(fct_keyword)])()
+								break
+			time.sleep(0.5)
+			prev_command = command
 
-				if any(word in command for word in config.greetings_list):
-					f.greetings()
-				elif any(word in command for word in config.wake_up_list):
-					f.wake_up()
-				elif any(word in command for word in config.exit_list):
-					f.exit()
-				elif any(word in command for word in config.enum_command_list):
-					f.enum_command()
-				elif any(word in command for word in config.time_list):
-					f.current_time()
-				elif any(word in command for word in config.weather_list):
-					f.weather()
-				elif any(word in command for word in config.music_list):
-					f.music("play")
-				elif any(word in command for word in config.mission_list):
-					f.say(config.mission)
-				elif any(word in command for word in config.master_list):
-					f.say(config.master)
-				elif any(word in command for word in config.search_list):
-					if "search" in command:
-						f.search(command.split("search",1)[1].lstrip())
-					if "look up" in command:
-						f.search(command.split("look up",1)[1].lstrip())
-				elif any(word in command for word in config.search_more_list) and \
-					 any(word in prev_command for word in config.search_list) :
-					f.search(prev_command.split("search",1)[1].lstrip(),4)
-				elif "youtube" in command:
-					f.youtube(command.replace("youtube",""))
-				elif any(word in command for word in config.thank_you_list):
-					choice = randint(0,len(config.thank_you)-1)
-					f.say(config.thank_you[choice])
-				elif any(word in command for word in config.sorry_list):
-					choice = randint(0,len(config.sorry)-1)
-					f.say(config.sorry[choice])
+	#Check if command is incomplete
+	def incomplete_command(self, incomplete_word):
+		if any(self.space_words(word) in self.space_words(incomplete_word) for word in config.incomplete_key) and len(incomplete_word.split()) == 1:
+			return True
+		else:
+			return False
 
-				time.sleep(0.5)
-				prev_command = command
-
-
+	def space_words(self, command):
+		return (' ' + command + ' ')
 

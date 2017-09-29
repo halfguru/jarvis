@@ -8,7 +8,7 @@ from urllib.request import urlopen
 from datetime import datetime, time
 from random import randint
 
-class Functions():
+class Commands():
 
 	def __init__(self):
 		self.r = sr.Recognizer()
@@ -133,33 +133,67 @@ class Functions():
 		choice = randint(0,len(config.wake_up)-1)
 		self.say(config.wake_up[choice])
 
+	#Positive reply to a command
+	def pos_reply(self,):
+		choice = randint(0,len(config.pos_reply)-1)
+		self.say(config.pos_reply[choice])
+
+	#Thank you command
+	def thank_you(self,):
+		choice = randint(0,len(config.thank_you)-1)
+		self.say(config.thank_you[choice])
+
+	#Sorry command
+	def sorry(self,):
+		choice = randint(0,len(config.sorry)-1)
+		self.say(config.sorry[choice])
+
+	#Incomplete command detection
+	def incomplete(self):
+		self.say(config.incomplete)
+
+	#Creator name
+	def master(self):
+		self.say(config.master)
+
 	#Close system
 	def exit(self):
 		self.say(config.exit)
 		sys.exit()
 
+	#Booting up message
+	def booting(self):
+		import time
+		self.say(config.booting_message[0])
+		time.sleep(1)
+		self.say(config.booting_message[1])
+
+	#Jarvis states its purpose	
+	def mission(self):		
+		self.say(config.mission)
+
 	#Checks current hour and minute
-	def current_time(self):
+	def time(self):
 		now = datetime.now()    
 		self.say("It is currently")
 		self.say(str(now.hour) + " hour")
 		self.say(str(now.minute) + " minute")
 
 	#Plays music
-	def music(self, type):
+	def music(self, type="play"):
 		if type.lower()=="play":
-			music_list = []
+			music_key = []
 			for root, dirs, files in os.walk('E:\music'):
 				for filename in files:
 					if os.path.splitext(filename)[1] == ".mp3":
-						music_list.append(os.path.join(root, filename))
-		randomSong = randint(0,len(music_list))
-		path = music_list[randomSong]
+						music_key.append(os.path.join(root, filename))
+		randomSong = randint(0,len(music_key))
+		path = music_key[randomSong]
 		path = path.rstrip(os.sep)
 		path = os.path.basename(path)
 		self.say("Playing " + str(path).replace("mp3",""))
 		print("Playing " + str(path).replace("mp3",""))
-		os.startfile(music_list[randomSong])
+		os.startfile(music_key[randomSong])
 
 	#Checks weather
 	def weather(self):
@@ -170,13 +204,17 @@ class Functions():
 		self.say("It is currently " + condition['temp'] + " degrees celcius and condition is " + condition['text'])
 
 	def youtube(self, textToSearch):
+		for key in config.youtube_key:
+			if key in textToSearch:
+				textToSearch   = textToSearch.split(key,1)[1].lstrip()
+				break
 		self.say("Searching for video")
 		query = urllib.parse.quote(textToSearch)
 		url = "https://www.youtube.com/results?search_query=" + query
 		response = urlopen(url)
 		html = response.read()
 		soup = BeautifulSoup(html,"html.parser")
-		self.say("Playing" + str(textToSearch) + " youtube video")
+		self.say("Playing " + str(textToSearch) + " youtube video")
 	
 		for vid in soup.findAll(attrs={'class':'yt-uix-tile-link'}):
 			if "https://googleads.g.doubleclick.net/" not in vid['href']:
@@ -185,6 +223,10 @@ class Functions():
 				break
 
 	def search(self, search_wiki, search_length=1):
+		for key in config.search_key:
+			if key in search_wiki:
+				search_wiki   = search_wiki.split(key,1)[1].lstrip()
+				break
 		try:
 			self.say("Searching for " + str(search_wiki))
 			if search_wiki is not "":

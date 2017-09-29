@@ -17,6 +17,14 @@ setup(
 	author='Simon Ho',
 	author_email='simon.ho@mail.mcgill.ca',
 	description='Just A Rather Very Intelligent System',
+	install_requires=[
+          'google-cloud',
+          'pyttsx3',
+          'webbrowser',
+          'wikipedia',
+          'SpeechRecognition',
+          'bs4'
+      ],
 	packages=['jarvis'],
 	platforms='any'
 )
