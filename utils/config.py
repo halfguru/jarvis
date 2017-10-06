@@ -13,6 +13,8 @@ GOOGLE_CLOUD_SPEECH_CREDENTIALS = r"""
 	"client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/jarvis%40idyllic-formula-181105.iam.gserviceaccount.com"
 }"""
 
+OATUH_ACCESS_TOKEN = """EAAdm8TWZCoxwBAPJRvWILAfajFCYs8vciFHE6RmJdiX6IbMJhvXFKiooOd7f5GarkrCQ7ZALqIWAakxMlhrfrEo4JaqSPXT8ZAVDI89PZBZAHhsQahMNc7djxZCtlBDP0MyDZBC5wsqnlQhjZC8tT8aJq9C0UBgIzKuFfXW7NaXZBMserF7ZBGbvZABY13nhpfZBHdwZChGy9yZB9tuQZDZD"""
+module_path = "C:/Users/Simon/Desktop/jarvis/modules/"
 
 #GOOGLE_CLOUD_SPEECH_CREDENTIALS_PATH = "C:/Users/sho/Desktop/jarvis/src/google_credentials.json"
 #GOOGLE_CLOUD_SPEECH_CREDENTIALS_PATH = "C:/Users/Simon/Desktop/Coding/jarvis/src/google_credentials.json"
@@ -22,34 +24,18 @@ GOOGLE_CLOUD_SPEECH_CREDENTIALS_PATH = PATH
 
 booting_message = ["Jarvis System, on.","How may I be of assistance sir."]
 
-robot_name_key  = ["jarvis", "showman","charters", "garvin", "charges", "charles","charms","for this", "sure this", "for that","john","for you","for her", "far this"]
-greetings_key   = ["greetings","hello","salutations","hi"]
-time_key 		= ["time", "hour"]
 music_key 		= ["music", "song", "track"]
-weather_key 	= ["weather", "temperature", "outside", "out there"]
-search_key		= ["search", "look up", "define"]
+
 search_more_key = ["tell me","more", "extend", "longer", "elaborate"]
 enum_command_key= ["list command", "command list", "list commands", "commands list" ,"can you do", "you can do", "enumerate"]
 enum_command 	= ["Greetings", "Wake up", "Exit", "Time", "Weather", "Music", "Mission", "Master", "Search", "Youtube", "Thank you", "Sorry", "Enumerate commands"]
-pos_reply_key   = ["interesting","amazing","wow", "cool","awesome"]
-pos_reply       = ["Indubitably, sir", "Quite so, sir", "Indeed it is sir", "I am incapable of understanding emotional response but I can empathize with your amazement, sir"]
+
+
 incomplete_key  = ["so", "jarvis", "can", "what", "when", "who"]
 incomplete 		= ["yes, sir?"]
-wake_up	 		= ["At your service, sir", "for you sir. I will always be there."]
-wake_up_key 	= ["you there", "hey jarvis", "wake up", "you up","hear me"]
-exit 			= "System powering down"
-exit_key		= ["exit", "terminate", "close","power down"]
-thank_you_key 	= ["thank you","thanks","appreciate it"]
-thank_you 		= ["no problem, sir", "with pleasure, sir", "much obliged, sir"]
-sorry_key 		= ["sorry", "my bad", "my fault", "oops", "my mistake"]
-sorry 			= ["no problem, sir", "mistakes are only human, sir", "you are forgiven, sir, carry on", "do not be sorry sir", "no worries", "it's fine", "apology accepted", "don't mention it","you should be, but I forgive you."]
+
 mission 		= "I am Jarvis, which stands for Just A Rather Very Intelligent System. I am a highly advanced computerized artificial intelligence developed by Simon Ho."
 mission_key 	= ["mission","who are you","purpose", "what are you"]
 master 			= "My creator is Simon Ho"
-youtube_key     = ["youtube", "video"]
+
 master_key 	    = ["master", "who created you", "who's your creator", "who is your creator", "who made you", "daddy"]
-fct_name		= ["greetings", "time", "music", "weather", "search", 
-		   		   "enum_command", "pos_reply", "wake_up", "exit", "thank_you",
-		   		   "sorry", "mission", "master", "youtube"]
-fct_key 		= [greetings_key, time_key, music_key, weather_key, search_key, enum_command_key, pos_reply_key, 
-				   wake_up_key, exit_key, thank_you_key,sorry_key, mission_key, master_key, youtube_key]
