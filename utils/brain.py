@@ -15,9 +15,17 @@ class Brain():
 				voice_input = voice_input.lower()
 				self.module_find_keyword(voice_input)
 
+	def listen_command(self):
+		while True:
+			voice_input = self.mic.listen()
+			if voice_input is not None:
+				voice_input = voice_input.lower()
+				return voice_input
+
+
 	def module_find_keyword(self, voice_input):
 		modules = []
-		for file in os.listdir(config.module_path):
+		for file in os.listdir(config.MODULES_PATH):
 			if file.endswith(".py"):
 				file = file.replace(".py","")
 				modules.append(file)

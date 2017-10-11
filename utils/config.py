@@ -14,7 +14,8 @@ GOOGLE_CLOUD_SPEECH_CREDENTIALS = r"""
 }"""
 
 OATUH_ACCESS_TOKEN = """EAAdm8TWZCoxwBAPJRvWILAfajFCYs8vciFHE6RmJdiX6IbMJhvXFKiooOd7f5GarkrCQ7ZALqIWAakxMlhrfrEo4JaqSPXT8ZAVDI89PZBZAHhsQahMNc7djxZCtlBDP0MyDZBC5wsqnlQhjZC8tT8aJq9C0UBgIzKuFfXW7NaXZBMserF7ZBGbvZABY13nhpfZBHdwZChGy9yZB9tuQZDZD"""
-module_path = "C:/Users/Simon/Desktop/jarvis/modules/"
+UTILS_PATH = os.getcwd()
+MODULES_PATH = UTILS_PATH.replace("utils","") + "/modules"
 
 #GOOGLE_CLOUD_SPEECH_CREDENTIALS_PATH = "C:/Users/sho/Desktop/jarvis/src/google_credentials.json"
 #GOOGLE_CLOUD_SPEECH_CREDENTIALS_PATH = "C:/Users/Simon/Desktop/Coding/jarvis/src/google_credentials.json"

@@ -122,27 +122,6 @@ class Commands():
 		time.sleep(1)
 		self.say(config.booting_message[1])
 
-	#Greetings depending on time
-	def greetings(self,):
-		now = datetime.now()
-		now_time = now.time()
-		if now_time >= time(1,30) and now_time <= time(12,30):
-			self.say('Good morning sir')
-		elif now_time >= time(12,31) and now_time <= time(17,30):
-			self.say('Good afternoon sir')
-		else:   
-			self.say('Good evening sir')
-
-	#Notifies the user the system is present
-	def wake_up(self,):
-		choice = randint(0,len(config.wake_up)-1)
-		self.say(config.wake_up[choice])
-
-	#Sorry command
-	def sorry(self,):
-		choice = randint(0,len(config.sorry)-1)
-		self.say(config.sorry[choice])
-
 	#Incomplete command detection
 	def incomplete(self):
 		self.say(config.incomplete)
@@ -156,23 +135,6 @@ class Commands():
 	#Jarvis states its purpose	
 	def mission(self):		
 		self.say(config.mission)
-
-
-	#Plays music
-	def music(self, type="play"):
-		if type.lower()=="play":
-			music_key = []
-			for root, dirs, files in os.walk('E:\music'):
-				for filename in files:
-					if os.path.splitext(filename)[1] == ".mp3":
-						music_key.append(os.path.join(root, filename))
-		randomSong = randint(0,len(music_key))
-		path = music_key[randomSong]
-		path = path.rstrip(os.sep)
-		path = os.path.basename(path)
-		self.say("Playing " + str(path).replace("mp3",""))
-		print("Playing " + str(path).replace("mp3",""))
-		os.startfile(music_key[randomSong])
 
 
 	def gmail(self):

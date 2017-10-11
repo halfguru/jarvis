@@ -1,6 +1,8 @@
-import sys
-sys.path.append("C:/Users/simon/Desktop/jarvis/utils/")
-sys.path.append("C:/Users/simon/Desktop/jarvis/modules/")
+import sys, os
+
+current_path = os.getcwd()
+sys.path.append(current_path + "/utils")
+sys.path.append(current_path + "/modules")
 import os, config
 from jarvis import *
 from mic import *
