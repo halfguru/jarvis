@@ -22,6 +22,8 @@ def handle(text):
 		wake_up()
 	elif text in sorry_words:
 		sorry()
+	else:
+		print("Reaction module not responding.")
 
 def thank_you():
 	thank_you_response = ["no problem sir", "with pleasure sir", "much obliged sir"]
