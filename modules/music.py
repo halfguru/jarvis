@@ -3,11 +3,13 @@ from random import randint
 from mic import *
 
 WORDS = []
-music_play_words    = ["music play", "play music"]
+music_play_words    = ["music play", "play music","next song"]
 music_pause_words 	= ["pause music", "music pause", "pause","resume", "resume music"]
 music_stop_words 	= ["stop", "stop music", "music stop"]
-music_selection		= ["music selection", "music list", "list music"]
-music_list = [music_play_words, music_pause_words, music_stop_words, music_selection]
+music_selection 	= ["music selection", "music list", "list music"]
+music_volume		= ["volume"]
+music_mute			= ["mute", "unmute"]
+music_list = [music_play_words, music_pause_words, music_stop_words, music_selection, music_volume, music_mute]
 for music in music_list:
 	for word in music:
 		WORDS.append(word)
@@ -15,12 +17,17 @@ for music in music_list:
 def handle(text):
 	if text in music_play_words:
 		p.OnOpen()
-	if text in music_pause_words:
+	elif text in music_pause_words:
 		p.PlayPause()
-	if text in music_stop_words:
+	elif text in music_stop_words:
 		p.OnStop()
-	if text in music_selection:
+	elif text in music_selection:
 		p.OnMusicList()
+	elif text in music_mute:
+		p.OnToggleVolume()
+	elif music_volume[0] in text:
+		volume = text.replace("volume ", "")
+		p.OnSetVolume(volume)
 
 class Player():
 	def __init__(self):
@@ -103,7 +110,6 @@ class Player():
 		self.player.set_media(self.media)
 		self.PlayPause()
 
-
 	def OnTimer(self):
 
 		if self.player == None:
@@ -118,29 +124,16 @@ class Player():
 			tyme = 0
 		dbl = tyme * 0.001
 
-
-	def volume_sel(self, evt):
-		if self.player == None:
-			return
-		volume = self.volume_var.get()
-		if volume > 100:
-			volume = 100
-		if self.player.audio_set_volume(volume) == -1:
-			print("Failed to set volume")
-
-	def OnToggleVolume(self, evt):
-	
+	def OnToggleVolume(self):
 		is_mute = self.player.audio_get_mute()
 		self.player.audio_set_mute(not is_mute)
 
-	def OnSetVolume(self):
-		"""Set the volume according to the volume sider.
-		"""
-		volume = self.volume_var.get()
-		# vlc.MediaPlayer.audio_set_volume returns 0 if success, -1 otherwise
-		if volume > 100:
-			volume = 100
-		if self.player.audio_set_volume(volume) == -1:
-			self.errorDialog("Failed to set volume")
+	def OnSetVolume(self, volume):
+		if not volume.isdigit():
+			m.say("Your volume command is not viable")
+			return
+		m.say("Setting volume to: " + str(volume))
+		self.player.audio_set_volume(int(volume))
+
 m = Mic()
 p = Player()

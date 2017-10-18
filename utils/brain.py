@@ -1,6 +1,5 @@
-import pkgutil, config, importlib
+import pkgutil, config, importlib, sys
 from mic import *
-import sys
 
 
 class Brain():

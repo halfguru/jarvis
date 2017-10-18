@@ -2,7 +2,6 @@ import math
 from weather import Weather
 from mic import *
 
-
 WORDS = ["weather", "temperature", "outside", "out there", "forecast"]
 m = Mic()
 

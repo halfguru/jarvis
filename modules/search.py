@@ -1,7 +1,6 @@
 import wikipedia
 from mic import *
 
-
 WORDS = ["search", "look up", "define"]
 m = Mic()
 
