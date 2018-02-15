@@ -15,6 +15,12 @@ pip install SpeechRecognition
 pip install bs4
 ```
 
+### Building
+```
+python __init__.py
+```
+
+
 ## Custom modules
 
 In modules, create another python file. Here's the clock module as an example:
