@@ -39,31 +39,25 @@ class Commands():
 		num_chars_printed = 0
 		try:
 			for response in responses:
-				print("Debug6")
 				if not response.results:
-					print("Debug1")
 					continue
 				# The `results` list is consecutive. 
 				result = response.results[0]
 
 				if not result.alternatives:
-					print("Debug2")
 					continue
 				# Display the transcription of the top alternative.
-				print("Debug3")
 				transcript = result.alternatives[0].transcript
 				# Display interim results, but with a carriage return at the end of the
 				# line, so subsequent lines will overwrite them.
 				overwrite_chars = ' ' * (num_chars_printed - len(transcript))
 
 				if not result.is_final:
-					print("Debug4")
 					sys.stdout.write(transcript + overwrite_chars + '\r')
 					sys.stdout.flush()
 					num_chars_printed = len(transcript)
 
-				else:
-					print("Debug5")					
+				else:			
 					print(transcript + overwrite_chars)
 					# Exit recognition if any of the transcribed phrases could be
 					# one of our keywords.
