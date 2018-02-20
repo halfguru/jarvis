@@ -10,10 +10,10 @@ AFFIRMATIVE = ["YES", "YEAH", "SURE", "YAH", "YA"]
 NEGATIVE = ["NO", "NEGATIVE", "NAH", "NA", "NOPE"]
 
 # Retrieve password
-with open(config.UTILS_PATH + "\\utils\\apple_config.txt","r") as apple_config:
+with open(config.UTILS_PATH + "\\utils\\apple_config.txt", "r") as apple_config:
     password = apple_config.read()
 
-# iCloud Settings
+# iCloud Settings, changed username and password for your own!
 ICLOUD_USERNAME = "miss_ya182@hotmail.com"
 ICLOUD_PASSWORD = password
 
@@ -63,7 +63,7 @@ def handle(text):
                     phone_to_ring = iphones[i]
                     break
                 else:
-                    i+=1
+                    i += 1
 
     # Just one
     phone_to_ring = iphones[1]
@@ -71,7 +71,7 @@ def handle(text):
     if not phone_to_ring:
         m.say("You didn't select an iPhone")
         return
- 
+
     m.say("Sending ring command to the phone now")
     time.sleep(3)
     phone_to_ring.play_sound()
