@@ -1,16 +1,17 @@
-import pyttsx3, os, json, config, math, urllib.parse, webbrowser, wikipedia
+import pyttsx3, os, json, config, math, urllib.parse, webbrowser, wikipedia, imaplib, email
 import speech_recognition as sr
-from microphone import *
-from random import randint
-from weather import Weather
-from bs4 import BeautifulSoup
+from microphone 	import *
+from random     	import randint
+from weather 		import Weather
+from bs4 			import BeautifulSoup
 from urllib.request import urlopen
-from datetime import datetime, time
-from random import randint
+from datetime 		import datetime, time
+from random 		import randint
 
 class Commands():
 
 	def __init__(self):
+		#Jarvis voice
 		self.r = sr.Recognizer()
 		self.engine = pyttsx3.init()
 		self.rate = self.engine.getProperty('rate')
@@ -18,6 +19,8 @@ class Commands():
 		self.engine.setProperty('rate', self.rate - 20)
 		self.engine.setProperty('voice', self.voices[1].id)
 		self.language_code = 'en-US'  # a BCP-47 language tag
+
+		#Speech Recognizer
 		os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = config.GOOGLE_CLOUD_SPEECH_CREDENTIALS_PATH
 		self.client = speech.SpeechClient()
 		self.config = types.RecognitionConfig(encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,sample_rate_hertz=RATE, language_code=self.language_code)
@@ -30,8 +33,9 @@ class Commands():
 			requests = (types.StreamingRecognizeRequest(audio_content=content)for content in audio_generator)
 			responses = self.client.streaming_recognize(self.streaming_config, requests)
 			# Now, put the transcription responses to use.
-			print("Awaiting command")
-			print("----------------")
+			print("=======================================================")
+			print("                 waiting for command...                ")
+			print("=======================================================")
 			return self.listen_print_loop(responses)
 
 	#Iterates through server responses and prints them.
@@ -57,12 +61,16 @@ class Commands():
 					sys.stdout.flush()
 					num_chars_printed = len(transcript)
 
+<<<<<<< HEAD:src/commands.py
 				else:			
+=======
+				else:				
+>>>>>>> 6fcbab4aebc941af00fd013e6754a336ce474b0a:utils/commands.py
 					print(transcript + overwrite_chars)
 					# Exit recognition if any of the transcribed phrases could be
 					# one of our keywords.
 					if re.search(r'\b(exit|quit)\b', transcript, re.I):
-						print('Exiting..')
+						sys.exit(0)
 						break
 					num_chars_printed = 0
 					return (transcript + overwrite_chars)
@@ -111,36 +119,12 @@ class Commands():
 		else:
 			self.say("You didn't say anything sir.")
 
-	#Greetings depending on time
-	def greetings(self,):
-		now = datetime.now()
-		now_time = now.time()
-		if now_time >= time(1,30) and now_time <= time(12,30):
-			self.say('Good morning sir')
-		elif now_time >= time(12,31) and now_time <= time(17,30):
-			self.say('Good afternoon sir')
-		else:   
-			self.say('Good evening sir')
-
-	#Notifies the user the system is present
-	def wake_up(self,):
-		choice = randint(0,len(config.wake_up)-1)
-		self.say(config.wake_up[choice])
-
-	#Positive reply to a command
-	def pos_reply(self,):
-		choice = randint(0,len(config.pos_reply)-1)
-		self.say(config.pos_reply[choice])
-
-	#Thank you command
-	def thank_you(self,):
-		choice = randint(0,len(config.thank_you)-1)
-		self.say(config.thank_you[choice])
-
-	#Sorry command
-	def sorry(self,):
-		choice = randint(0,len(config.sorry)-1)
-		self.say(config.sorry[choice])
+	#Booting up message
+	def booting(self):
+		import time
+		self.say(config.booting_message[0])
+		time.sleep(1)
+		self.say(config.booting_message[1])
 
 	#Incomplete command detection
 	def incomplete(self):
@@ -150,89 +134,50 @@ class Commands():
 	def master(self):
 		self.say(config.master)
 
-	#Close system
-	def exit(self):
-		self.say(config.exit)
-		sys.exit()
 
-	#Booting up message
-	def booting(self):
-		import time
-		self.say(config.booting_message[0])
-		time.sleep(1)
-		self.say(config.booting_message[1])
 
 	#Jarvis states its purpose	
 	def mission(self):		
 		self.say(config.mission)
 
-	#Checks current hour and minute
-	def time(self):
-		now = datetime.now()    
-		self.say("It is currently")
-		self.say(str(now.hour) + " hour")
-		self.say(str(now.minute) + " minute")
 
-	#Plays music
-	def music(self, type="play"):
-		if type.lower()=="play":
-			music_key = []
-			for root, dirs, files in os.walk('E:\music'):
-				for filename in files:
-					if os.path.splitext(filename)[1] == ".mp3":
-						music_key.append(os.path.join(root, filename))
-		randomSong = randint(0,len(music_key))
-		path = music_key[randomSong]
-		path = path.rstrip(os.sep)
-		path = os.path.basename(path)
-		self.say("Playing " + str(path).replace("mp3",""))
-		print("Playing " + str(path).replace("mp3",""))
-		os.startfile(music_key[randomSong])
+	def gmail(self):
+		ORG_EMAIL   = "@gmail.com"
+		FROM_EMAIL  = "dkhoe7" + ORG_EMAIL
+		FROM_PWD    = "philosophiagc23ba"
+		SMTP_SERVER = "imap.gmail.com"
+		SMTP_PORT   = 993
+		mail = imaplib.IMAP4_SSL(SMTP_SERVER)
+		mail.login(FROM_EMAIL,FROM_PWD)
+		mail.select('inbox')
 
-	#Checks weather
-	def weather(self):
-		weather = Weather()
-		lookup = weather.lookup(91982014)
-		condition = lookup.condition()
-		condition['temp'] = str(math.ceil((int(condition['temp']) - 32)*0.555555))
-		self.say("It is currently " + condition['temp'] + " degrees celcius and condition is " + condition['text'])
+		type, data = mail.search(None, 'ALL')
+		mail_ids = data[0]
 
-	def youtube(self, textToSearch):
-		for key in config.youtube_key:
-			if key in textToSearch:
-				textToSearch   = textToSearch.split(key,1)[1].lstrip()
-				break
-		self.say("Searching for video")
-		query = urllib.parse.quote(textToSearch)
-		url = "https://www.youtube.com/results?search_query=" + query
-		response = urlopen(url)
-		html = response.read()
-		soup = BeautifulSoup(html,"html.parser")
-		self.say("Playing " + str(textToSearch) + " youtube video")
-	
-		for vid in soup.findAll(attrs={'class':'yt-uix-tile-link'}):
-			if "https://googleads.g.doubleclick.net/" not in vid['href']:
-				print ("https://www.youtube.com" + vid["href"])
-				webbrowser.open("https://www.youtube.com" + vid["href"])
-				break
+		id_list = mail_ids.split()   
+		print(id_list[0])
+		first_email_id = int(id_list[0])
+		latest_email_id = int(id_list[-1])
 
-	def search(self, search_wiki, search_length=1):
-		for key in config.search_key:
-			if key in search_wiki:
-				search_wiki   = search_wiki.split(key,1)[1].lstrip()
-				break
-		try:
-			self.say("Searching for " + str(search_wiki))
-			if search_wiki is not "":
-				print("Searching for " + str(search_wiki))
-				search_summary = ".".join(wikipedia.summary(search_wiki).split(".")[:(search_length)])
-				self.say(search_summary)
-			else:
-				self.say("Your search query is empty sir")
-		except:
-			self.say("Please precise your search query sir")
+
+		for i in range(latest_email_id,first_email_id, -1):
+			typ, data = mail.fetch(str(i), '(RFC822)' )
+
+			for response_part in data:
+				if isinstance(response_part, tuple):
+					msg = email.message_from_string(response_part[1].decode('utf-8'))
+					email_subject = msg['subject']
+					email_from = msg['from']
+					print ('From : ' + email_from + '\n')
+					print ('Subject : ' + email_subject + '\n')
+
+
 
 	def enum_command(self):
 		self.say("Here is the list of commands I can accomplish for you sir")
 		for commands in config.enum_command:
 			self.say(commands)
+
+if __name__ == '__main__':
+	c = Commands()
+	c.gmail()
